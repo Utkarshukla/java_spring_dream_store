@@ -1,0 +1,18 @@
+spring:
+ application:
+  name:shop
+
+ datasource:
+   url: jdbc:mysql://localhost:3306/java_dream_shop?useSSL=false&serverTimezone=UTC
+   username: root
+   password: ''
+   driver-class-name: com.mysql.cj.jdbc.Driver
+   show-sql: true
+
+jwt:
+    secret: "sofsMusof93494iKHEIKSDLWKDNWLIOI3JDKLSNDLKSN"
+    expiration: 86400000 # 1 day in milliseconds
+# security:
+#   user:
+#     name: admin
+#     password: admin123
