@@ -1,10 +1,10 @@
-package com.user.auth;
+package com.dream.shop;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class AuthApplicationTests {
+class ShopApplicationTests {
 
 	@Test
 	void contextLoads() {
