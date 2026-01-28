@@ -1,4 +1,4 @@
 # Simple Store backend 
 ## Entity 
-### Product , Image, Category
+### Product , Image(m:1), Category(1:m)
 
