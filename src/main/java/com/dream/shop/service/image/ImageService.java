@@ -38,6 +38,7 @@ public class ImageService implements IImageService{
                 Image image = new Image();
                 image.setFilName(file.getOriginalFilename());
                 image.setImage(new SerialBlob(file.getBytes()));
+                image.setFileType(file.getContentType());
                 image.setProduct(product);
 
                 String buildDonwloadUrl = "/api/v1/images/";
@@ -51,6 +52,7 @@ public class ImageService implements IImageService{
                 ImageDto dto = new ImageDto();
                 dto.setImageId(savedImage.getId());
                 dto.setImageName(savedImage.getFilName());
+                dto.setFileType(savedImage.getFileType());
                 dto.setDownloadUri(savedImage.getDownloadUrl());
                 imageDto.add(dto);
 
@@ -67,6 +69,7 @@ public class ImageService implements IImageService{
         Image image = getImageById(imageId);
         try {
             image.setFilName(file.getOriginalFilename());
+            image.setFileType(file.getContentType());
             image.setImage(new SerialBlob(file.getBytes()));
             imageRepository.save(image);
         } catch (Exception e) {

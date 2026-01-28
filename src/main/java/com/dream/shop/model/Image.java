@@ -1,6 +1,5 @@
 package com.dream.shop.model;
 
-
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,7 +9,10 @@ import lombok.Setter;
 import java.sql.Blob;
 
 @Entity
-@Getter @Setter @AllArgsConstructor @NoArgsConstructor
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Image {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,6 +22,8 @@ public class Image {
 
     private String filePath;
 
+    private String fileType;
+
     @Lob
     private Blob image;
 
@@ -27,5 +31,6 @@ public class Image {
 
     @ManyToOne
     @JoinColumn(name = "product_id")
+    @com.fasterxml.jackson.annotation.JsonIgnore // recuursive relationship 
     private Product product;
 }
