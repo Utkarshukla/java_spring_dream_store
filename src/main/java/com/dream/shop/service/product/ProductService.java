@@ -3,23 +3,25 @@ package com.dream.shop.service.product;
 import com.dream.shop.exceptions.ProductNotFoundException;
 import com.dream.shop.model.Category;
 import com.dream.shop.model.Product;
+import com.dream.shop.repository.CategoryRepository;
 import com.dream.shop.repository.ProductRepository;
 import com.dream.shop.request.AddProductRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class ProductService implements IProductService{
     private final ProductRepository productRepository;
+    private final CategoryRepository categoryRepository;
     @Override
     public Product addProduct(AddProductRequest product) {
-        Category category = new Category();
-        category.setName(product.getCategoryName());
-        Product newProduct = createProduct(product, category);
-        return productRepository.save(newProduct);
+        Category category = Optional.ofNullable(categoryRepository.findByName(product.getCategory().getName())).orElseGet(()-> categoryRepository.save(new Category(null, product.getCategory().getName(), null)));
+        product.setCategory(category);
+        return productRepository.save(createProduct(product,category));
 //        return ;
     }
 
@@ -42,7 +44,24 @@ public class ProductService implements IProductService{
 
     @Override
     public Product updateProduct(Long id, Product product) {
-        return null;
+        Category category = Optional.ofNullable(categoryRepository.findByName(product.getCategory().getName())).orElseGet(()-> categoryRepository.save(new Category(null, product.getCategory().getName(), null)));
+        product.setCategory(category);
+        Optional<Product> existingProduct = productRepository.findById(id);
+        if (existingProduct.isPresent()) {
+            return updateExistingProduct(existingProduct.get(), product);
+        } else {
+            throw new ProductNotFoundException("Product not found with id: " + id);
+        }
+    }
+
+    private Product updateExistingProduct(Product existingProduct, Product newProductData) {
+        existingProduct.setName(newProductData.getName());
+        existingProduct.setBrand(newProductData.getBrand());
+        existingProduct.setPrice(newProductData.getPrice());
+        existingProduct.setInventory(newProductData.getInventory());
+        existingProduct.setDescription(newProductData.getDescription());
+        existingProduct.setCategory(newProductData.getCategory());
+        return productRepository.save(existingProduct);
     }
 
     @Override
