@@ -1,8 +1,10 @@
 package com.dream.shop.service.product;
 
 import com.dream.shop.exceptions.ProductNotFoundException;
+import com.dream.shop.model.Category;
 import com.dream.shop.model.Product;
 import com.dream.shop.repository.ProductRepository;
+import com.dream.shop.request.AddProductRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -11,10 +13,26 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class ProductService implements IProductService{
-    private ProductRepository productRepository;
+    private final ProductRepository productRepository;
     @Override
-    public Product addProduct(Product product) {
-        return null;
+    public Product addProduct(AddProductRequest product) {
+        Category category = new Category();
+        category.setName(product.getCategoryName());
+        Product newProduct = createProduct(product, category);
+        return productRepository.save(newProduct);
+//        return ;
+    }
+
+    private Product createProduct(AddProductRequest product, Category category){
+        return new Product(
+                product.getName(),
+                product.getBrand(),
+                product.getPrice(),
+                product.getInventory(),
+                product.getDescription(),
+                category
+        );
+
     }
 
     @Override
