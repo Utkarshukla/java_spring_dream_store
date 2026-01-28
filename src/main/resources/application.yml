@@ -15,6 +15,8 @@ spring:
       hibernate:
          format_sql: true
 
+api:
+  prefix: /api/v1
 jwt:
     secret: "sofsMusof93494iKHEIKSDLWKDNWLIOI3JDKLSNDLKSN"
     expiration: 86400000 # 1 day in milliseconds
